@@ -1,11 +1,14 @@
 kind: Pod
 apiVersion: v1
 metadata:
-  name: csi-app-on-dir-static
+  name: csi-app-on-fs-api
 spec:
+  # make sure that pod is scheduled only on node having weka CSI node running
+  nodeSelector:
+    topology.csi.weka.io/global: "true"
   containers:
     - name: my-frontend
-      image: busybox
+      image: ubuntu
       volumeMounts:
       - mountPath: "/data"
         name: my-csi-volume
@@ -14,4 +17,4 @@ spec:
   volumes:
     - name: my-csi-volume
       persistentVolumeClaim:
-        claimName: pvc-wekafs-dir-static # defined in pvc-wekafs-dir.yaml
+        claimName: pvc-wekafs-fs-api # defined in pvc-wekafs-dir-api.yaml
